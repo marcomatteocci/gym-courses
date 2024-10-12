@@ -36,6 +36,7 @@ gymCourses/
     │   └── styles.css         # Fogli di stile CSS del progetto
     └── js/                    # Cartella JS
         └── scripts.js         # Codice JavaScript personalizzato
+```
 
 ## Installazione e primo avvio
 
@@ -59,9 +60,9 @@ Per eseguire il progetto in locale, segui questi passaggi:
    ```
 
 4. **Configura il database**:
-   - Esegui il seeder per popolare il database con dati di esempio:
+- Esegui il seeder per popolare il database con dati di esempio:
      ```bash
-     python seeders.py
+   python seeders.py
      ```
 
 5. **Esegui l'applicazione**:
