@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}- Profilo{% endblock %}
+{% block content %}
+    <section class="structure extra-space section">
+        <div class="container">
+            <div class="row gy-4">
+                {% if current_user and current_user.role == 'trainer' %}
+                    <h2 class="mb-0">Benvenuto Trainer </h2>
+                    <p class="mt-0">{{ current_user.name }} {{ current_user.last_name }}</p>
+                {% elif current_user and current_user.role == 'user' %}
+                    <h2 class="mb-0">Ciao {{ current_user.name }} {{ current_user.last_name }}</h2>
+                    <p class="mt-0">Qui puoi prenotare i corsi disponibili nella tua struttura </p>
+                {% endif %}
+                <hr/>
+            </div>
+            <div class="row mt-0 mb-5">
+                {% if current_user and current_user.role != 'gym' %}
+                    <div class="col-sm-12 col-lg-4">
+                        <h3 class="mb-3 mt-2"><i class="bi bi-person-circle"></i> Profilo</h3>
+                        <div class="item light-grey bg-body-secondary position-relative">
+                            <div class="icon float-end bg-color-grey"
+                                 style="width: 100px; height: 100px; padding-top: 10px; margin-left: 10px; font-size: 50px!important;">
+                                <i class="bi bi-person-badge-fill"></i>
+                            </div>
+                            <h3>{{ current_user.name }}</h3>
+                            <p>{{ current_user.notes }}<br/>
+                            <hr/>
+                            <strong>Username:</strong> {{ current_user.username }}<br/>
+                            <strong>Email:</strong> {{ current_user.email }}<br/>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if structure %}
+                    <div class="col-sm-12 col-lg-4">
+                        <h3 class="mb-3 mt-2"><i class="bi bi-buildings"></i> Struttura</h3>
+                        <div class="item grey bg-color-grey position-relative">
+                            <div class="icon float-end bg-color-grey"
+                                 style="width: 100px; height: 100px; padding-top: 10px; margin-left: 10px; font-size: 50px!important;">
+                                <i class="bi {{ structure.logo }}"></i>
+                            </div>
+                            <h3>{{ structure.name }}</h3>
+                            <p>{{ structure.address }}<br/>
+                            <hr/>
+                            <strong>Telefono:</strong> {{ structure.phone }}<br/>
+                            <strong>Email:</strong> {{ structure.email }}<br/>
+                            <strong>Sito web:</strong> {{ structure.email }}<br/>
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if user_memberships %}
+                    {% for membership in user_memberships %}
+                        <div class="col-sm-12 col-lg-4">
+                            <h3 class="mb-3 mt-2"><i class="bi bi-card-text"></i> Abbonamento</h3>
+                            <div class="item white position-relative">
+                                <div class="icon float-end"
+                                     style="width: 100px; height: 100px; padding-top: 10px; margin-left: 10px; font-size: 50px!important;">
+                                    <i class="bi {{ membership.icon }}"></i>
+                                </div>
+                                <h3>{% if membership.left_entrance %}{{ membership.left_entrance }}
+                                    /{% endif %}{{ membership.name }}</h3>
+                                <p>{{ membership.description }}<br/>
+                                <hr/>
+                                <strong>Data di Inizio:</strong> {{ membership.start_date }}<br/>
+                                <strong>Data di Fine:</strong> {{ membership.end_date }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <br><br>
+                {% endif %}
+        </div>
+    </section>
+{% endblock %}

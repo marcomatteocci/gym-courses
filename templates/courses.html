@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}- gestisci corsi{% endblock %}
+{% block content %}
+    <section class="structure extra-space section">
+        <div class="container">
+            <div class="row gy-4">
+                {% if current_user and current_user.role == 'trainer' %}
+                    <h2 class="mb-0">Benvenuto Trainer</h2>
+                    <p class="mt-0">{{ current_user.name }} {{ current_user.last_name }}</p>
+                {% elif current_user and current_user.role == 'admin' %}
+                    <h2 class="mb-0">Benvenuto Admin</h2>
+                    <p class="mt-0">{{ current_user.name }} {{ current_user.last_name }}</p>
+                {% elif current_user and current_user.role == 'gym' %}
+                    <h2 class="mb-0">Benvenuto {{ current_user.name }} </h2>
+                    <p class="mt-0">Qui puoi visualizzare i corsi con prenotazioni nella tua struttura</p>
+                {% elif current_user and current_user.role == 'user' %}
+                    <h2 class="mb-0">{{ current_user.name }}, prenota e scopri nuovi corsi!</h2>
+                    <p class="mt-0">Qui puoi prenotare o modificare i corsi della tua struttura</p>
+                {% endif %}
+                {% if get_flashed_messages(with_categories=true) %}
+                    {% for category, text in get_flashed_messages(with_categories=true) %}
+                        <div class="flex-fill alert alert-{{ category }} alert-dismissible" role="alert">
+                            {{ text }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if bookings %}
+                    <hr/>
+                    {% if current_user and current_user.role == 'trainer' or current_user.role == 'gym' %}
+                        <h3 class="text-center mb-0 mt-0"><i class="bi bi-calendar2-check"></i> Corsi con prenotazioni
+                        </h3>
+                    {% elif current_user and current_user.role == 'user' %}
+                        <h3 class="text-center mb-0 mt-0"><i class="bi bi-calendar2-check"></i> Corsi prenotati</h3>
+                    {% elif current_user and current_user.role == 'admin' %}
+                        <h3 class="text-center mb-0 mt-0"><i class="bi bi-calendar2-check"></i> Corsi prenotati in tutte
+                            le
+                            strutture</h3>
+                    {% endif %}
+                {% endif %}
+
+                {% if current_user and bookings %}
+                    <div class="container">
+                        <div class="list-group mt-3">
+                            {% for user in users %}
+                                {% if user.bookings %}
+                                    <div class="user-section mt-3">
+                                        <h5><strong>Utente:</strong> {{ user.name }} {{ user.last_name }}</h5>
+                                        <ul class="list-group">
+                                            <!-- Iterazione sulle prenotazioni dell'utente, raggruppate per data -->
+                                            {% for date, bookings in user.bookings | sort(attribute='schedule.start_date') | groupby('schedule.start_date') %}
+                                                <li class="list-group-item active bg-color-grey border-0">
+                                                    <strong>{{ date.strftime("%d/%m/%Y") }}</strong>
+                                                </li>
+                                                <!-- Iterazione sulle singole prenotazioni per quella data -->
+                                                {% for booking in bookings | sort(attribute='schedule.start_time') %}
+                                                    <li class="d-flex align-items-center list-group-item justify-content-between">
+                                                        <div>
+                                                            <i class="bi {{ booking.course.logo }}"
+                                                               style="color: #48a1dc; margin-right: 10px; font-size: 20px!important;"></i>
+                                                            <strong>{{ booking.course.name }}</strong>
+                                                        </div>
+
+                                                        <!-- Orario del corso -->
+                                                        {{ booking.schedule.start_time.strftime("%H:%M") }} -
+                                                        Lezione da {{ booking.schedule.duration }} minuti
+                                                        <strong>{{ booking.course.structure.name }}</strong>
+                                                        {{ booking.course.trainer.name }} {{ booking.course.trainer.last_name }}
+                                                        {% if current_user and current_user.role == 'user' %}
+                                                            <a href="{{ url_for('course', course_id=booking.course.id) }}"
+                                                               class="btn mt-0 mb-0 btn-secondary rounded-5">
+                                                                Modifica
+                                                            </a>
+                                                        {% elif current_user and (current_user.role == 'admin' or current_user.role == 'gym') %}
+                                                            <a href="{{ url_for('cancel', course_id=booking.course.id, schedule_id=booking.schedule.id, user_id=booking.user_id) }}"
+                                                               class="btn btn-danger rounded-5 btn-sm">Cancella</a>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="item light-grey white position-relative border-top-0">
+                            <h4 class="text-center fs-5 color-dark-grey opacity-50">Non risultano ancora
+                                prenotazioni</h4>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if structure %}
+                <div class="row mt-2 gy-4">
+                    <hr/>
+                    {% if current_user and current_user.role == 'trainer' %}
+                        <h3 class="text-center mt-0"><i class="bi bi-calendar-week"></i> I tuoi corsi presso
+                        <i class="bi bi-person-arms-up"></i>{{ structure.name }}
+                    {% elif current_user and current_user.role == 'user' or current_user.role == 'gym' %}
+                        <h3 class="text-center mt-0"><i class="bi bi-calendar-week"></i> Corsi disponibili presso
+                        <i class="bi bi-person-arms-up"></i>{{ structure.name }}
+                    {% elif current_user and current_user.role == 'admin' %}
+                        <h3 class="text-center mt-0"><i class="bi bi-calendar-week"></i> Corsi disponibili in tutte le
+                        strutture
+                    {% endif %}
+                    </h3>
+                    {% for course in available_courses %}
+                        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                            <div class="item light-grey bg-body-secondary position-relative">
+                                <div class="icon position-relative float-end"
+                                     style="width: 100px; height: 100px; color: #48a1dc; padding-top: 10px; font-size: 50px!important;">
+                                    <i class="bi {{ course.logo }}"></i>
+                                </div>
+                                <h3>{{ course.name }}</h3>
+                                <strong>Trainer:</strong> {{ course.trainer.name }} {{ course.trainer.last_name }}<br/>
+                                <strong>Struttura:</strong> {{ course.structure.name }}<br/>
+                                {% if current_user and current_user.role == 'user' %}
+                                    <div style="min-height: 90px" class="mt-2">
+                                        <strong class="color-light-blue text-uppercase">Perchè
+                                            sceglierlo</strong><br/> {{ course.description }}
+                                    </div>
+                                    <a href="{{ url_for('course', course_id=course.id) }}"
+                                       class="btn mt-3 w-100 mb-0 btn-secondary rounded-5">
+                                        Prenota ORA!
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

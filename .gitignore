@@ -1,0 +1,10 @@
+instance/*
+!instance/.gitignore
+.webassets-cache
+.env
+.idea
+*.log
+gym-courses-env/*
+__pycache__/
+*.py[cod]
+*$py.class

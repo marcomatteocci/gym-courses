@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}- gestisci corso{% endblock %}
+{% block content %}
+    <section class="structure extra-space section">
+        <div class="container">
+            <div class="row gy-4">
+                <h2 class="mb-0">{{ current_user.name }}, scegli tra i corsi disponibili</h2>
+                <p class="mt-0">Qui puoi prenotare i corsi disponibili nella tua struttura</p>
+                <hr/>
+                <h3 class="text-center mb-0 mt-0"><i class="bi bi-calendar2-check"></i> Prenota il corso</h3>
+
+                {% if course %}
+                    <div class="col-12">
+                        <div class="item light-grey white position-relative">
+                            <div class="icon float-end"
+                                 style="width: 100px; height: 100px; color: #48a1dc; font-size: 50px!important;">
+                                <i class="bi {{ course.logo }}"></i>
+                            </div>
+                            <h3>{{ course.name }}</h3>
+                            <p class="mt-0 mb-4">{{ course.description }}</p>
+                            <strong>Trainer:</strong> {{ course.trainer.name }} {{ course.trainer.last_name }}<br/>
+                            <strong>Palestra:</strong> {{ course.structure.name }}<br/>
+                            <strong>Indirizzo:</strong> {{ course.structure.address }}<br/>
+                            <hr/>
+
+                            <!-- Orari disponibili -->
+                            <h4>Orari disponibili:</h4>
+                            <ul class="list-group">
+                                {% for date, schedules in course.schedules | sort(attribute='start_date') | groupby('start_date') %}
+                                    <!-- Data del corso -->
+                                    <li class="list-group-item active bg-color-grey border-0">
+                                        <strong>{{ date.strftime("%d/%m/%Y") }}</strong>
+                                    </li>
+                                    {% for schedule in schedules | sort(attribute='start_time') %}
+                                        <li class="d-flex align-items-center list-group-item justify-content-between">
+                                        <!-- Orario del corso -->
+                                            {{ schedule.start_time.strftime("%H:%M") }} - Lezione da {{ schedule.duration }} minuti
+
+                                            <!-- Disponibilità dei posti -->
+                                            {% set posti_rimanenti = schedule.capacity - schedule.used %}
+                                            {% if posti_rimanenti == 0 %}
+                                                <span class="badge bg-danger">0 posti rimanenti!</span>
+                                            {% elif posti_rimanenti < 4 %}
+                                                <span class="badge bg-warning">{{ posti_rimanenti }} posti rimanenti</span>
+                                            {% else %}
+                                                <span class="badge bg-success">{{ posti_rimanenti }} posti rimanenti</span>
+                                            {% endif %}
+
+                                            <!-- Bottone di prenotazione -->
+                                            {% if posti_rimanenti > 0 %}
+                                                {% if schedule.id in booked_schedule_ids %}
+                                                    <a href="{{ url_for('cancel', course_id=course.id, schedule_id=schedule.id, user_id=current_user.id) }}"
+                                                       class="btn btn-danger rounded-5 btn-sm">Cancella</a>
+                                                {% else %}
+                                                    <a href="{{ url_for('book', course_id=course.id, schedule_id=schedule.id) }}"
+                                                       class="btn btn-secondary rounded-5 btn-sm">Prenota</a>
+                                                {% endif %}
+                                            {% else %}
+                                                <a href="#"
+                                                       class="btn btn-secondary disabled w-25 btn-sm">Non disponibile</a>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="item light-grey white position-relative border-top-0">
+                            <h4 class="text-center fs-5 color-dark-grey opacity-50">Non risultano ancora
+                                prenotazioni</h4>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

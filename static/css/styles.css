@@ -1,0 +1,88 @@
+body{color:#666;font-family:"Raleway",sans-serif}
+.color-grey,h1,h2,h3,h4,h5,h6,p{color:#39454f}
+.bg-color-grey{background:#39454f!important}
+.color-light-blue{color:#48a1dc}
+.bg-light-blue{background:#48a1dc!important}
+.color-dark-grey{color:#151c20}
+a{color:#39454f;text-decoration:none}
+a:hover{color:#48a1dc;text-decoration:none}
+.header{padding:20px 0;transition:all .8s;z-index:900}
+.header .logo h1{font-size:33px;color:#48a0dc}
+.header .btn-login,.header .btn-login:focus{color:#fff;background:#48a0dc;font-size:14px;padding:8px 20px;margin:0 5px 0 30px;border-radius:50px;transition:.3s}
+.header .btn-login:hover{background:#39454f}
+.scrolled .header{padding:0;background-color:#39454f}
+.scrolled .header h1,.scrolled .header span{color:#fff}
+.scrolled .header .navmenu a{color:#fff}
+.scrolled .header .navmenu a:hover{color:#48a1dc}
+.scrolled .header .btn-login{color:#39454f;background:#fff}
+.scrolled .header .btn-login:hover{background:#48a1dc;color:#fff}
+@media (max-width: 1200px) {
+.header,.header .header-container{padding:0}
+.header .header-container{padding:10px 0}
+.header .logo{order:1;margin:0 10px}
+.header .btn-login{order:2;margin-right:15px;padding:6px 15px}
+.header .navmenu{order:3}
+}
+@media (min-width: 1200px) {
+.navmenu{padding:0}
+.navmenu ul{margin:0;padding:0;display:flex;list-style:none;align-items:center}
+.navmenu li{position:relative}
+.navmenu a,.navmenu a:focus{color:#38454f;padding:18px 15px;font-size:13px;text-transform:uppercase;font-family:"Open Sans",sans-serif;font-weight:500;display:flex;align-items:center;justify-content:space-between;white-space:nowrap;transition:.3s}
+.navmenu a i,.navmenu a:focus i{font-size:12px;line-height:0;margin-left:5px;transition:.3s}
+.navmenu li:last-child a{padding-right:0}
+.navmenu li:hover > a,.navmenu .active,.navmenu .active:focus{color:#48a1dc}
+}
+@media (max-width: 1199px) {
+.mob-nav-toggle{color:#38454f;font-size:28px;line-height:0;margin-right:10px;cursor:pointer;transition:color .3s}
+.scrolled .mob-nav-toggle.bi{color:#FFF!important}
+.navmenu{padding:0;z-index:9997}
+.navmenu ul{display:none;list-style:none;position:absolute;inset:60px 20px 20px 20px;padding:10px 0;margin:0;border-radius:6px;background-color:#FFF;overflow-y:auto;transition:.3s;z-index:9998;box-shadow:0 0 30px rgba(0,0,0,0.1)}
+.navmenu a,.navmenu a:focus{color:#38454f;padding:10px 20px;font-family:"Open Sans",sans-serif;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:space-between;white-space:nowrap;transition:.3s}
+.navmenu a i,.navmenu a:focus i{font-size:12px;line-height:0;margin-left:5px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:.3s;background-color:#48a1dc}
+.navmenu a i:hover,.navmenu a:focus i:hover{background-color:#48a1dc;color:#fff}
+.navmenu a:hover,.navmenu .active,.navmenu .active:focus{color:#38454f}
+.navmenu .active i,.navmenu .active:focus i{background-color:#48a1dc;color:#fff;transform:rotate(180deg)}
+.mob-nav-active{overflow:hidden}
+.mob-nav-active .mob-nav-toggle{color:#fff;position:absolute;font-size:42px;top:15px;right:15px;margin-right:0;z-index:9999}
+.mob-nav-active .navmenu{position:fixed;overflow:hidden;inset:0;background:rgba(33,37,41,0.6);transition:.3s}
+.mob-nav-active .navmenu > ul{display:block}
+}
+.welcome{width:100%;min-height:75vh;position:relative;padding:80px 0;display:flex;justify-content:center;align-items:center}
+.welcome:before{content:"\f903";
+    font-family: bootstrap-icons, serif;font-size:1400px;color:#48a0dc;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.1}
+.welcome .container{position:relative;z-index:3}
+.welcome h2{color:#39454f;font-size:48px;font-weight:700}
+.welcome p{margin:10px 0 0;font-size:24px;color:#39454f}
+.welcome .btn-login{color:#39454f;font-weight:400;font-size:16px;letter-spacing:1px;display:inline-block;padding:8px 40px;margin:30px 0 0;border-radius:50px;transition:.5s;border:2px solid #39454f}
+.welcome .btn-login:hover{color:#FFF;background:#48a1dc;border:2px solid #48a1dc}
+@media (max-width: 390px) {
+.header .logo h1{font-size:20px}
+}
+@media (max-width: 768px) {
+.welcome h2{font-size:32px}
+.welcome p{font-size:18px}
+.welcome:before{font-size:800px}
+}
+.extra-space{margin-top:80px}
+section,.section{padding:20px 0 40px;scroll-margin-top:45px;overflow:clip}
+@media (max-width: 1199px) {
+section,.section{scroll-margin-top:53px}
+}
+.section-title{padding-bottom:60px;position:relative}
+.section-title h2{font-size:32px;font-weight:700;margin-bottom:20px;padding-bottom:20px;position:relative}
+.section-title p{margin-bottom:0}
+.structure.item h3,.structure.item p{color:#FFF}
+.structure .item{background-color:#FFF;box-shadow:0 5px 90px 0 rgba(0,0,0,0.1);padding:40px 30px;border-radius:60px;border-top:8px solid #39454f;border-bottom:8px solid #39454f;height:100%}
+.structure .item .icon{color:#39454f;background:#39454f;margin:0;width:64px;height:64px;border-radius:50px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:28px}
+.structure .light-blue .icon{color:#48a1dc;background:#fff!important}
+.structure .light-grey .icon{color:#39454f;background:#fff!important}
+.structure .white .icon{color:#FFF;background:#39454f!important}
+.structure .light-grey{color:#39454f}
+.structure .grey{color:#FFF}
+.structure .grey .icon{background:#fff!important}
+.structure .grey p,.structure .grey h3{color:#FFF}
+.structure .item h3{font-weight:700;margin:10px 0 16px;font-size:22px}
+.structure .item p{margin-bottom:0;line-height:24px;font-size:14px}
+.footer{padding:30px 0;position:relative}
+.footer .footer-txt .logo span{font-size:30px;color:#666}
+.footer .footer-txt p{font-size:14px;color:#666}

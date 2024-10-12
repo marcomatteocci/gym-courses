@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}- Abbonamenti{% endblock %}
+{% block content %}
+    <section class="structure extra-space section">
+        <div class="container">
+            <div class="row gy-4">
+                <h2 class="mb-0">Abbonamenti</h2>
+                <p class="mt-0">Qui puoi visualizzare gli abbonamenti disponibili </p>
+                <hr/>
+                <h3 class="text-center mb-0 mt-0"><i class="bi bi-card-text"></i> I tuoi abbonamenti</h3>
+                {% if user_memberships %}
+                    {% for membership in user_memberships %}
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-4">
+                            <div class="item white position-relative">
+                                <div class="icon">
+                                    <i class="bi {{ membership.icon }}"></i>
+                                </div>
+                                <h3>
+                                    {% if membership.left_entrance %}{{ membership.left_entrance }}/{% endif %}
+                                    {{ membership.name }}
+                                </h3>
+                                <p>{{ membership.description }}<br/>
+                                <hr/>
+                                <strong>Data di Inizio:</strong> {{ membership.start_date }}<br/>
+                                <strong>Data di Fine:</strong> {{ membership.end_date }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="item light-grey white position-relative border-top-0">
+                            <h4 class="text-center fs-5 color-dark-grey opacity-50">
+                                Abbonamenti non disponibili
+                            </h4>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="container">
+            <div class="row mt-2 gy-4">
+                <div class="col-12 pt-0 pb-0">
+                    <hr/>
+                    <h3 class="text-center mt-0"><i class="bi bi-card-checklist"></i> Scopri gli abbonamenti che puoi
+                        richiedere</h3>
+                    <p class="text-center">Inizia ad allenarti con noi, scopri il piano che meglio si adatta alle tue esigenze!</p>
+                </div>
+            </div>
+
+            {% if memberships %}
+                <div class="row mt-4">
+                    {% for membership in memberships %}
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-4">
+                            <div class="item white position-relative">
+                                <span class="fs-5 badge float-end p-3 rounded-5 bg-color-grey mt-2">{{ membership.price }}</span>
+                                <div class="icon">
+                                    <i class="bi {{ membership.icon }}"></i>
+                                </div>
+                                <h3>{{ membership.name }}</h3>
+                                <p>{{ membership.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Al momento non ci sono membership disponibili.</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

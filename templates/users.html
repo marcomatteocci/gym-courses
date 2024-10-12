@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}- Gestisci utenti{% endblock %}
+{% block content %}
+    <section class="structure extra-space section">
+        <div class="container">
+            <div class="row gy-4">
+                {% if structures %}
+                    <h2 class="mb-0">Gestisci palestre</h2>
+                {% else %}
+                    <h2 class="mb-0">Gestisci utenti</h2>
+                {% endif %}
+                <p class="mt-0">Qui puoi visualizzare gli utenti raggruppati per struttura</p>
+                <div class="container">
+                    <div class="list-group mt-3">
+                        <!-- Iterazione sugli utenti -->
+                        {% for user in users %}
+                            {% if user.user_subscriptions and user.user_subscriptions|length > 0 %}
+                                <div class="structure-section mt-3">
+                                    <h5 class="list-group-item active bg-color-grey border-0">
+                                        <strong>{{ user.name }} {{ user.last_name }}</strong> ({{ user.email }})
+                                    </h5>
+                                    <ul class="list-group">
+                                        <li class="d-flex align-items-center list-group-item justify-content-between">
+                                            <div>
+                                                <strong>Struttura:</strong> {{ user.user_subscriptions[0].structure.name }}<br>
+                                                <strong>Indirizzo:</strong> {{ user.user_subscriptions[0].structure.address }}<br>
+                                                <strong>Descrizione:</strong> {{ user.notes }}<br>
+                                                <strong>Role:</strong> {{ user.role }}<br>
+                                                <strong>Tipo di
+                                                    abbonamento:</strong>{{ user.user_subscriptions[0].membership.name }}<br>
+                                                <strong>Creato il:
+                                                </strong> {{ user.created_at.strftime("%d/%m/%Y alle %H:%M") }}<br>
+                                            </div>
+                                            <div>
+                                                <a href="{{ url_for('profile', user_id=user.id) }}"
+                                                   class="mb-2 float-end w-100 disabled btn btn-secondary rounded-5 btn-sm">
+                                                    Modifica</a>
+                                                <a href="{{ url_for('profile', user_id=user.id) }}"
+                                                   class="float-end w-100 disabled btn btn-danger rounded-5 btn-sm">
+                                                    Elimina</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
